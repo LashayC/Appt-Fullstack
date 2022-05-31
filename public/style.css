@@ -10,3 +10,8 @@ img{
 #true{
   background-color: lightgoldenrodyellow;
 }
+
+/* Index.ejs styling */
+#indexLanding{
+  background-image: url(dumbbell.jpg) !important;
+}
