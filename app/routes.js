@@ -65,7 +65,7 @@ const {ObjectId} = require('mongodb') //gives access to _id in mongodb
 // Home Page Routes ===============================================================
 
     app.post('/addWorkoutLog', (req, res) => {
-      db.collection('workout-posts').insertOne({name: req.body.name, date: req.body.date, workoutHours: req.body.workoutHours, workoutMinutes: req.body.workoutMinutes, workoutRoutine: req.body.workoutRoutine, workoutNotes: req.body.workoutNotes}, (err, result) => {
+      db.collection('workout-posts').insertOne({name: req.body.name, date: req.body.date, workoutHours: req.body.workoutHours, workoutMinutes: req.body.workoutMinutes, workoutRoutine: req.body.workoutRoutine, workoutNotes: req.body.workoutNotes, starred: true}, (err, result) => {
         if (err) return console.log(err)
         //console.log(result)
         console.log('saved to database')
@@ -73,34 +73,47 @@ const {ObjectId} = require('mongodb') //gives access to _id in mongodb
       })
     })
 
-    // app.post('/careUpdate', (req, res) => {
-    //   db.collection('plants').updateOne({ _id: ObjectId(req.body.plantID)},
-    //   {
-    //     $push: {
-    //       plantCare:{
-    //       water: req.body.water, 
-    //       comments: req.body.comments,
-    //       careDate: req.body.careDate,
-    //       status: req.body.status, 
-    //       waterReminderDate: req.body.waterReminderDate
-    //       }
-    //     }
-    //   },
-    //    (err, result) => {
-    //     if (err) return console.log(err)
-    //     //console.log(result)
-    //     console.log('saved to database')
-    //     res.redirect('/home')
-    //   })
-    // })
+    app.put('/addStarred', (req, res) => {
+        db.collection('workout-posts')
+        .findOneAndUpdate({ _id: ObjectId(req.body.postObjectID)}, 
+        {
+          $set: {
+            starred: true
+          }
+        },
+         {
+          sort: {_id: -1}, //Sorts documents in db ascending (1) or descending (-1)
+          upsert: true
+        }, (err, result) => {
+          if (err) return res.send(err)
+          res.send(result)
+        })
+      })
 
-     // app.delete('/deletePlant', (req, res) => {
-    //   db.collection('plants').findOneAndDelete({ _id: ObjectId(req.body.theID)}, (err, result) => {
-    //     if (err) return res.send(500, err)
-    //     res.send('Message deleted!')
-    //   })
-    // })
+      app.put('/removeStarred', (req, res) => {
+        db.collection('workout-posts')
+        .findOneAndUpdate({ _id: ObjectId(req.body.postObjectID)}, 
+        {
+          $set: {
+            starred: false
+          }
+        },
+         {
+          sort: {_id: -1}, //Sorts documents in db ascending (1) or descending (-1)
+          upsert: true
+        }, (err, result) => {
+          if (err) return res.send(err)
+          res.send(result)
+        })
+      })
 
+
+      app.delete('/deleteWorkoutPost', (req, res) => {
+        db.collection('workout-posts').findOneAndDelete({ _id: ObjectId(req.body.postObjectID)}, (err, result) => {
+          if (err) return res.send(500, err)
+          res.send('Message deleted!')
+        })
+      })
 
 // message board routes ===============================================================
     // app.put('/messages', (req, res) => {

@@ -11,9 +11,8 @@
 
 <body>
     <section class="container">
-
         <section class="page-header text-center">
-            <h1><span class="fa fa-anchor"></span> Home Page</h1>
+            <h1>Workout Log</h1>
             <a href="/logout" class="btn btn-default btn-sm">Logout</a>
             <a href="/home" class="btn btn-default btn-sm">Home</a>
             <a href="/profile" class="btn btn-default btn-sm">Profile</a>
@@ -24,68 +23,83 @@
 
         <!-- LOCAL INFORMATION -->
         <section class="row">
-            <h2>Workout Log</h2>
+            <section class="col-sm-4 plantBoxes">
+                <h2>Add a log</h2>
+                
+                <% if (user.local.email) { %>
+
+                    <form action="/addWorkoutLog" method="POST" role="form">
+                        <input hidden value="<%= user.local.email %>" name="name">
+                        <fieldset>
+                            <legend  >Date:</legend>
+                            <input type="date" placeholder="Enter date" name="date" required>
+                        </fieldset>
+
+                        <fieldset>
+                        <legend>Workout Time:</legend>
+                            <input limit type="number" placeholder="hrs" name="workoutHours" max="2" required>
+                            <input type="number" placeholder="mins" name="workoutMinutes" max="2" required>
+
+                    </fieldset>
+
+                    <fieldset>
+                           <legend>Workout Routine:</legend> 
+                            <textarea name="workoutRoutine" placeholder="Drop the routine" cols="20" rows="5"
+                                required></textarea>
+                    </fieldset>
+
+                    <fieldset>
+                        <legend> Notes:</legend>
+                           
+                            <textarea name="workoutNotes" placeholder="How are you feeling?" cols="20" rows="5"
+                                required></textarea>
+                    </fieldset>
+                        <label for="">
+                            <input type="submit" name="Submit" id="">
+                        </label>
+                    </form>
+
+                    
+                    <% } %>
+            </section>
             <% for(let i=0; i<myWorkLogs.length; i++) {%>
-                <section class="col-sm-6 plantBoxes" id="<%=myWorkLogs[i]._id%>">
-                    <section>
+                <section class="col-sm-4 " id="<%=myWorkLogs[i]._id%>">
+                    <section id="<%=myWorkLogs[i].starred%>">
                         <h3>
-                           Date: <%= myWorkLogs[i].date %>
+                            Date: <%= myWorkLogs[i].date %>
                         </h3>
                         <h3>Workout Time:</h3>
-                        <span> <%= myWorkLogs[i].workoutHours %> </span>
-                        <span><%= myWorkLogs[i].workoutMinutes %> </span>
+                        <span>
+                            <%= myWorkLogs[i].workoutHours %> hrs
+                        </span>
+                        <span>
+                            <%= myWorkLogs[i].workoutMinutes %> mins
+                        </span>
                         <!-- <img class="plantpic"  src="img/plant-icon.gif" alt="generic plant image"> -->
                         <h3>Routine:</h3>
-                       <p> <%= myWorkLogs[i].workoutRoutine %> </p>
-                       <h3>Notes/Improvements:</h3>
-                       <p> <%= myWorkLogs[i].workoutNotes %> </p>
+                        <p>
+                            <%= myWorkLogs[i].workoutRoutine %>
+                        </p>
+                        <h3>Notes/Improvements:</h3>
+                        <p>
+                            <%= myWorkLogs[i].workoutNotes %>
+                        </p>
 
                         <span><i class="fa fa-star-o" aria-hidden="true"></i></span>
                         <span><i class="fa fa-trash-o" aria-hidden="true"></i></span>
-            
+
                     </section>
-                                                       
+
                 </section>
-            <% } %>
+                <% } %>
 
 
 
-                        <section class="col-sm-6 plantBoxes">
-                            <h2>Add a log</h2>
-                            <img src="" alt="A dumbell">
-                            <% if (user.local.email) { %>
-                                
-                                <form action="/addWorkoutLog" method="POST">
-                                    <input hidden value="<%= user.local.email %>" name="name">
-                                    <fieldset>
-                                        <legend>Date:</legend>
-                                        <input type="date" placeholder="Enter date" name="date" required>
-                                    </fieldset>
-                                    <label>
-                                        Workout Time:                                 
-                                        <input type="number" placeholder="hrs" name="workoutHours" required>
-                                        <input type="number" placeholder="mins" name="workoutMinutes" required>
 
-                                    </label>
-                                    <label>
-                                        Workout Routine:
-                                        <textarea name="workoutRoutine" placeholder="Drop the routine" cols="30" rows="5" required></textarea>
-                                    </label>
-                                    <label>
-                                        Notes:
-                                        <textarea name="workoutNotes" placeholder="How are you feeling?" cols="30" rows="10" required></textarea>
-                                    </label>
-                                    <label for="">
-                                    <input type="submit" name="Submit" id="">
-                                </label>
-                                </form>
-                                <% } %>
-                        </section>
-                
         </section>
-        
+
     </section>
-    
+
     <script src="/main.js"></script>
 
 </body>

@@ -1,6 +1,6 @@
 // // const thumbUp = document.getElementsByClassName("fa-thumbs-up");
-// // const thumbDown = document.getElementsByClassName("fa-thumbs-down");
-// const trash = document.getElementsByClassName("fa-trash-o");
+const star = document.getElementsByClassName("fa-star-o");
+const trash = document.getElementsByClassName("fa-trash-o");
 
 // const addCareBtn = document.getElementsByClassName('addCareBtn')
 
@@ -9,30 +9,72 @@
 // const updateForm = document.getElementsByClassName('updateForm')
 // const plantMain = document.getElementsByClassName('plantMain')
 
+Array.from(star).forEach(function(element) {
+    element.addEventListener('click', function(){
+  
+      const postObjectID = this.parentNode.parentNode.parentNode.id
+      //console.log(`this ${postObjectID}`)
+      const star = this.parentNode.parentNode.id
 
+      console.log('this',postObjectID)
+      
+      if(star == 'true'){
+        
+        fetch('removeStarred', {
+          method: 'put',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            'postObjectID': postObjectID
+          })
+        })
+        .then(response => {
+          if (response.ok) return response.json()
+        })
+        .then(data => {
+          //console.log(data)
+          window.location.reload(true)
+        })
+      
+      }else if (star == 'false'){
+         
+        fetch('addStarred', {
+          method: 'put',
+          headers: {'Content-Type': 'application/json'},
+          body: JSON.stringify({
+            'postObjectID': postObjectID
+          })
+        })
+        .then(response => {
+          if (response.ok) return response.json()
+        })
+        .then(data => {
+          console.log(data)
+          window.location.reload(true)
+        })
+      }
+    
+    
+    });
+});
 
-// // function showCareForm(e){
-// //   if(e.target.classList.contains('addCareBtn')){
-// //     updateForm.classList.toggle('hideForm')
-// //   }
-// //   // updateForm.classList.toggle('hideForm')
-// // }
-
-// // plantMain.addEventListener('click', showCareForm)
-
-
-// // Array.from(seeCareBtn).forEach(function(element) {
-// //   element.addEventListener('click', function(){
-// //     // if(updateForm.classList.contains('hideform')){
-// //     //   updateForm.classList.remove('hideForm')
-// //     // }else(!updateForm.classList.contains('hideform')){
-// //     //   updateForm.classList.add('hideForm')
-// //     // }
-// //     // updateForm.classList.toggle('hideForm')
-// //     document.getElementsByClassName('updateForm').toggle('visible')
-
-// //   });
-// // });
+Array.from(trash).forEach(function(element) {
+    element.addEventListener('click', function(){
+      const postObjectID = this.parentNode.parentNode.parentNode.id
+  
+      fetch('deleteWorkoutPost', {
+        method: 'delete',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          'postObjectID':postObjectID
+        })
+      }).then(function (response) {
+        window.location.reload()
+      })
+    });
+  });
+  
 
 // // Array.from(thumbUp).forEach(function(element) {
 // //       element.addEventListener('click', function(){

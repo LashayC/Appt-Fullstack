@@ -7,10 +7,6 @@ img{
 }
 
 /* Home.ejs styling */
-.plantBoxes{
-  border: 1px solid green;
-}
-.plantpic{
-  display: block;
-  margin: auto;
+#true{
+  background-color: lightgoldenrodyellow;
 }
